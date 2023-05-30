@@ -3,7 +3,7 @@ package myproject;
 import java.util.Scanner;
 
 
-public class App {
+public class Main {
 
     static void greetCustomer() {
         Scanner scanner = new Scanner(System.in);
