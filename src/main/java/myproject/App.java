@@ -160,11 +160,13 @@ public class App {
     }
 
     static void anotherOrderInput() {
+
         System.out.println("Would you like to add another item? (y/n):");
         String  yesOrNo = scanner.nextLine();
 
         if (yesOrNo.equals("y")) {
             orderInput();
+
         } else if (yesOrNo.equals("n")) {
             System.out.println("Thank you for your order!");
             order.createOrder();
@@ -172,9 +174,11 @@ public class App {
             dates.calcDates(order.getTotalTime());
             delayProgram(2000);
             return;
+
         } else if(yesOrNo.isEmpty()) {
             System.out.println("invalid input");
             anotherOrderInput();
+
         }else {
             System.out.println("invalid input");
             anotherOrderInput();
@@ -182,8 +186,8 @@ public class App {
     }
 
     static void saveOrder() {
+        
         invoice = new Invoice();
-
         invoice.setCustomerInfo(customer.getCustomerInfo());
         invoice.setOrder(order.getOrderTable());
         invoice.setOrderDetails(dates.getOrderTime(), dates.getProductionTime(), dates.getPickupTime());
@@ -192,17 +196,32 @@ public class App {
         convertToJson = new ConvertToJson<>(invoice, PATH, invoice.getOrderId());
         convertToJson.save();
 
-        getPdfInvoice(invoice.getOrderId());
+        showInvoice(invoice.getOrderId());
     }
 
-    static void getPdfInvoice(String orderId) {
-        convertToPdf = new ConvertToPdf(PATH, orderId);
-        try {
-            convertToPdf.ConvertPdf();
-            convertToPdf.openPdfFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+    static void showInvoice(String orderId) {
+
+        System.out.println("Would you like to review your invoice as a pdf? (y/n):");
+        String  yesOrNo = scanner.nextLine();
+
+        if(yesOrNo.equals("y")) {
+
+            convertToPdf = new ConvertToPdf(PATH, orderId);
+            try {
+                convertToPdf.ConvertPdf();
+                convertToPdf.openPdfFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if(yesOrNo.equals("n")) {
+            System.out.println("Thank you");
+        } else {
+            System.out.println("invalid input");
+            showInvoice(invoice.getOrderId());
         }
+
+    
     }
 
     static void delayProgram(long milliseconds) {
